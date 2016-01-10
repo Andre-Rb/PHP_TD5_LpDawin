@@ -1,21 +1,7 @@
 <?php
 use Gregwar\Image\Image;
 
-
-//$admins = ['admins' =>
-//    [
-//        'admin' => 'password',
-//        'toriel' => 'mom',
-//        'mr' => 'smith',
-//        'Ash' => 'Ketchum'
-//    ]
-//];
-//var_dump($admins['admins']);
-//var_dump(array('admin' => 'password'));
-//var_dump(isset($admins['admins']));
-//if (isset($admins['admins']['admin']) && $admins['admins']['admin'] == 'password') {
-//    echo "Ton test marche bro :)";
-//}
+//var_dump($app['model']->getAllCopiesOfABookById($bookId));
 
 $app->match('/', function () use ($app) {
     return $app['twig']->render('home.html.twig');
@@ -24,7 +10,8 @@ $app->match('/', function () use ($app) {
 
 $app->match('/viewBook/{bookId}', function ($bookId) use ($app) {
     return $app['twig']->render('bookDetails.html.twig', array(
-        'lookedUpBook' => $app['model']->getOneBook($bookId)
+        'lookedUpBook' => $app['model']->getOneBook($bookId),
+        'copiesOfBook' => $app['model']->getAllCopiesOfABookById($bookId)
     ));
 })->bind('viewBook');
 
