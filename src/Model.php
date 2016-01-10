@@ -9,14 +9,14 @@ class Model
         try {
             if ($config['engine'] == 'mysql') {
                 $this->pdo = new \PDO(
-                    'mysql:dbname='.$config['database'].';host='.$config['host'],
+                    'mysql:dbname=' . $config['database'] . ';host=' . $config['host'],
                     $config['user'],
                     $config['password']
                 );
                 $this->pdo->exec('SET CHARSET UTF8');
             } else {
                 $this->pdo = new \PDO(
-                    'sqlite:'.$config['file']
+                    'sqlite:' . $config['file']
                 );
             }
         } catch (\PDOException $error) {
@@ -33,7 +33,6 @@ class Model
             $errors = $query->errorInfo();
             throw new ModelException($errors[2]);
         }
-
         return $query;
     }
 
@@ -59,5 +58,17 @@ class Model
         $this->execute($query);
 
         return $query->fetchAll();
+    }
+
+    /**
+     * Getting one particular book
+     */
+    public function getOneBook($id)
+    {
+        $query = $this->pdo->prepare('SELECT livres.* FROM livres WHERE id=?');
+
+        $this->execute($query, array($id));
+
+        return $query->fetchAll()[0];
     }
 }

@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+{% block contents %}
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-4">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Titre du livre</h3>
+
+                    </div>
+
+                    <div class="panel-body">
+                        {{ lookedUpBook.titre }}
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-4">
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Auteur</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ lookedUpBook.auteur }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <img src="{{ app.request.basepath }}/uploads/{{ lookedUpBook.image }}.jpg"/>
+
+
+            <div class="col-md-7">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Synosis</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ lookedUpBook.synopsis }}
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+{% endblock %}

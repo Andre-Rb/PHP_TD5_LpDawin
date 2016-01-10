@@ -1,24 +1,52 @@
 <?php
-
 use Gregwar\Image\Image;
 
-$app->match('/', function() use ($app) {
+
+//$admins = ['admins' =>
+//    [
+//        'admin' => 'password',
+//        'toriel' => 'mom',
+//        'mr' => 'smith',
+//        'Ash' => 'Ketchum'
+//    ]
+//];
+//var_dump($admins['admins']);
+//var_dump(array('admin' => 'password'));
+//var_dump(isset($admins['admins']));
+//if (isset($admins['admins']['admin']) && $admins['admins']['admin'] == 'password') {
+//    echo "Ton test marche bro :)";
+//}
+
+$app->match('/', function () use ($app) {
     return $app['twig']->render('home.html.twig');
 })->bind('home');
 
-$app->match('/books', function() use ($app) {
+
+$app->match('/viewBook/{bookId}', function ($bookId) use ($app) {
+    return $app['twig']->render('bookDetails.html.twig', array(
+        'lookedUpBook' => $app['model']->getOneBook($bookId)
+    ));
+})->bind('viewBook');
+
+
+$app->match('/books', function () use ($app) {
     return $app['twig']->render('books.html.twig', array(
         'books' => $app['model']->getBooks()
     ));
-})->bind('books');
+})->bind('books')->method("get");
 
-$app->match('/admin', function() use ($app) {
+
+//LOGIN
+
+$app->match('/admin', function () use ($app) {
     $request = $app['request'];
     $success = false;
     if ($request->getMethod() == 'POST') {
         $post = $request->request;
         if ($post->has('login') && $post->has('password') &&
-            array($post->get('login'), $post->get('password')) == $app['config']['admin']) {
+            isset($app['config']['admins'][$post->get('login')]) &&
+            $app['config']['admins'][$post->get('login')] == $post->get('password')
+        ) {
             $app['session']->set('admin', true);
             $success = true;
         }
@@ -28,12 +56,13 @@ $app->match('/admin', function() use ($app) {
     ));
 })->bind('admin');
 
-$app->match('/logout', function() use ($app) {
+
+$app->match('/logout', function () use ($app) {
     $app['session']->remove('admin');
     return $app->redirect($app['url_generator']->generate('admin'));
 })->bind('logout');
 
-$app->match('/addBook', function() use ($app) {
+$app->match('/addBook', function () use ($app) {
     if (!$app['session']->has('admin')) {
         return $app['twig']->render('shouldBeAdmin.html.twig');
     }
@@ -42,19 +71,20 @@ $app->match('/addBook', function() use ($app) {
     if ($request->getMethod() == 'POST') {
         $post = $request->request;
         if ($post->has('title') && $post->has('author') && $post->has('synopsis') &&
-            $post->has('copies')) {
+            $post->has('copies')
+        ) {
             $files = $request->files;
             $image = '';
 
             // Resizing image
             if ($files->has('image') && $files->get('image')) {
-                $image = sha1(mt_rand().time());
+                $image = sha1(mt_rand() . time());
                 Image::open($files->get('image')->getPathName())
                     ->resize(240, 300)
-                    ->save('uploads/'.$image.'.jpg');
+                    ->save('uploads/' . $image . '.jpg');
                 Image::open($files->get('image')->getPathName())
                     ->resize(120, 150)
-                    ->save('uploads/'.$image.'_small.jpg');
+                    ->save('uploads/' . $image . '_small.jpg');
             }
 
             // Saving the book to database
@@ -65,4 +95,3 @@ $app->match('/addBook', function() use ($app) {
 
     return $app['twig']->render('addBook.html.twig');
 })->bind('addBook');
-

@@ -5,6 +5,9 @@ $loader->add('', 'src');
 
 $app = new Silex\Application;
 
+
+
+
 // App configuration
 $app['config'] = require('config.php');
 

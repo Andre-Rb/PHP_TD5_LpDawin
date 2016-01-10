@@ -11,5 +11,11 @@ return [
     ],
 
     // Administrator auth
-    'admin' => ['admin', 'password']
+    'admins' =>
+        [
+            'admin' => 'password',
+            'toriel' => 'mom',
+            'mr' => 'smith',
+            'Ash' => 'Ketchum'
+        ]
 ];

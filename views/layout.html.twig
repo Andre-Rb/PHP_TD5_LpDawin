@@ -1,40 +1,57 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Bibliothèque</title>
-        <link rel="stylesheet" href="{{ app.request.basepath }}/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="{{ app.request.basepath }}/css/style.css" />
-        <link rel="icon" href="{{ app.request.basepath }}/favicon.ico" type="image/x-icon" />
-    </head>
-    <body>
-        <div class="container">
-            <div class="pull-right">
-                <img class="logo" src="{{ app.request.basepath }}/css/books.png" />
-            </div>
+<head>
+    <title>Bibliothèque</title>
+    <link rel="stylesheet" href="{{ app.request.basepath }}/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{ app.request.basepath }}/css/style.css"/>
+    <link rel="icon" href="{{ app.request.basepath }}/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+<div class="container">
+    <div class="pull-right">
+        <img class="logo" src="{{ app.request.basepath }}/css/books.png"/>
+    </div>
 
-            <h1>Bibliothèque</h1>
+    <h1>Bibliothèque</h1>
 
-            <nav class="navbar navbar-default">
-               <ul class="nav navbar-nav">
-                    <li class="{% if home_active is defined %}active{% endif%}">
-                        <a href="{{ path('home') }}">Accueil</a>
-                    </li>
-                    <li class="{% if books_active is defined %}active{% endif%}">
-                        <a href="{{ path('books') }}">Les livres</a>
-                    </li>
-                    <li class="{% if admin_active is defined %}active{% endif%}">
-                        <a href="{{ path('admin') }}">Administration</a>
-                    </li>
-                    <li class="{% if add_book_active is defined %}active{% endif%}">
-                        <a href="{{ path('addBook') }}">Ajouter un livre</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('logout') }}">Déconnexion</a>
-                    </li>
-               </ul>
-            </nav>
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li class="{% if home_active is defined %}active{% endif %}">
+                <a href="{{ path('home') }}">Accueil</a>
+            </li>
+            <li class="{% if books_active is defined %}active{% endif %}">
+                <a href="{{ path('books') }}">Les livres</a>
+            </li>
 
-            {% block contents %}{% endblock %}
-        </div>
-    </body>
+            {% if app.session.get('admin') == false %}
+                <li class="{% if admin_active is defined %}active{% endif %}">
+                    <a href="{{ path('admin') }}">Administration</a>
+                </li>
+            {% endif %}
+            <li class="{% if add_book_active is defined %}active{% endif %}">
+                <a href="{{ path('addBook') }}">Ajouter un livre</a>
+            </li>
+
+            {% if app.session.get('admin') %}
+
+                <li>
+                    <a href="{{ path('logout') }}">Déconnexion</a>
+                </li>
+
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% block contents %}{% endblock %}
+</div>
+<br>
+<hr>
+{{ dump(app.request.getMethod() ) }}
+{{ dump(app.request.request ) }}
+{#{{ dump(home_active ) }}#}
+{#{% if app.session.admin is defined %}#}
+{{ dump(app.session.all) }}
+{#{% endif %}#}
+
+</body>
 </html>
