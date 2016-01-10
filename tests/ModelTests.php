@@ -17,9 +17,20 @@ class ModelTests extends BaseTests
         $this->assertEquals($numberOfCopiesWanted, $numberOfCopiesInserted);
 
 
+        // We get the id of a book and check if we got the right one
+        $bookID = $this->app['model']->getOneBookWithParams('Test', 'Someone')['id'];
+        $bookTitle = $this->app['model']->getOneBookWithParams('Test', 'Someone')['titre'];
+
+        $this->assertEquals("Test", $bookTitle);
+        $this->assertEquals(1, $bookID);
+
+
         // There is one book
         $books = $this->app['model']->getBooks();
         $this->assertEquals(1, count($books));
+
+        $copiesOfABook = $this->app['model']->getAllCopiesOfABookById($bookID);
+        $this->assertEquals($numberOfCopiesWanted, count($copiesOfABook));
 
 
     }

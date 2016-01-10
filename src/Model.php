@@ -86,8 +86,12 @@ class Model
 
     /**
      * Getting one particular book
+     * @param $titre titre of the book we're looking for
+     * @param $auteur auteur of the book we're looking for
+     * @return an array of the book
+     * @throws ModelException
      */
-    public function getOneBookWithParams($title, $auteur)
+    public function getOneBookWithParams($titre, $auteur)
     {
         $query = $this->pdo->prepare('
             SELECT livres.* FROM livres
@@ -95,7 +99,7 @@ class Model
             AND auteur=?
         ');
 
-        $this->execute($query, array($title, $auteur));
+        $this->execute($query, array($titre, $auteur));
 
         return $query->fetchAll()[0];
     }
@@ -106,9 +110,11 @@ class Model
      */
     public function getAllCopiesOfABookById($id)
     {
+
+
         $query = $this->pdo->prepare('
-            SELECT library.exemplaires.* FROM livres
-            WHERE library.exemplaires.book_id=?
+            SELECT exemplaires.* FROM exemplaires
+           WHERE exemplaires.book_id=?
         ');
 
         $this->execute($query, array($id));
