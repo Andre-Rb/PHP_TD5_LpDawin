@@ -99,4 +99,20 @@ class Model
 
         return $query->fetchAll()[0];
     }
+
+
+    /**
+     * Get all copies of a book
+     */
+    public function getAllCopiesOfABookById($id)
+    {
+        $query = $this->pdo->prepare('
+            SELECT library.exemplaires.* FROM livres
+            WHERE library.exemplaires.book_id=?
+        ');
+
+        $this->execute($query, array($id));
+
+        return $query->fetchAll();
+    }
 }

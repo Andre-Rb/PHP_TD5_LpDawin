@@ -11,19 +11,16 @@ class ModelTests extends BaseTests
         $books = $this->app['model']->getBooks();
         $this->assertEquals(0, count($books));
 
-        // Inserting one
+        // Inserting one and checking if there is enough copies
         $numberOfCopiesWanted = 3;
         $numberOfCopiesInserted = $this->app['model']->insertBook('Test', 'Someone', 'A test book', 'image', $numberOfCopiesWanted);
-        $this->assertEquals($numberOfCopiesWanted, $numberOfCopiesInserted, $numberOfCopiesInserted);
+        $this->assertEquals($numberOfCopiesWanted, $numberOfCopiesInserted);
 
 
         // There is one book
         $books = $this->app['model']->getBooks();
         $this->assertEquals(1, count($books));
 
-        // TODO: Vérifier que 3 exemplaires ont été créés
-        $this->app['model']->insertBook('Test', 'Someone', 'A test book', 'image', 3);
 
-        $this->assertEquals(1, count($books));
     }
 }
