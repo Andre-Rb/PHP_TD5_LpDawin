@@ -38,14 +38,26 @@ class Model
 
     /**
      * Inserting a book in the database
+     * Returns the numbers of copies inserted
      */
     public function insertBook($title, $author, $synopsis, $image, $copies)
     {
         $query = $this->pdo->prepare('INSERT INTO livres (titre, auteur, synopsis, image)
             VALUES (?, ?, ?, ?)');
+
         $this->execute($query, array($title, $author, $synopsis, $image));
 
-        // TODO: Créer $copies exemplaires
+        $lastInsertedId = $this->getOneBookWithParams($title, $author)['id'];
+        $totalInsert = 0;
+
+        for ($i = 0; $i < $copies; $i++) {
+            $query = $this->pdo->prepare('INSERT INTO exemplaires (book_id) VALUES (?)');
+
+            $this->execute($query, array($lastInsertedId));
+            $totalInsert++;
+        }
+
+        return $totalInsert;
     }
 
     /**
@@ -68,6 +80,22 @@ class Model
         $query = $this->pdo->prepare('SELECT livres.* FROM livres WHERE id=?');
 
         $this->execute($query, array($id));
+
+        return $query->fetchAll()[0];
+    }
+
+    /**
+     * Getting one particular book
+     */
+    public function getOneBookWithParams($title, $auteur)
+    {
+        $query = $this->pdo->prepare('
+            SELECT livres.* FROM livres
+            WHERE titre=?
+            AND auteur=?
+        ');
+
+        $this->execute($query, array($title, $auteur));
 
         return $query->fetchAll()[0];
     }
