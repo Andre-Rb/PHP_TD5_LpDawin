@@ -121,4 +121,18 @@ class Model
 
         return $query->fetchAll();
     }
+
+
+    /**
+     * Inserting a new borrowing in the database
+     */
+    public function insertBorrowing($exemplaire, $personName, $bgnDate, $endDate)
+    {
+        $query = $this->pdo->prepare('INSERT INTO emprunts (exemplaire, personne, dateDebut, dateFin, estFini)
+            VALUES (?, ?, ?, ?)');
+
+        $this->execute($query, array($exemplaire, $personName, $bgnDate, $endDate, 0));
+
+
+    }
 }
