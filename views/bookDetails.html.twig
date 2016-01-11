@@ -1,5 +1,7 @@
 {% extends 'layout.html.twig' %}
 {% block contents %}
+
+    {{ dump(borrowedCopiesOfBook) }}
     <div class="container">
         <div class="row">
             <div class=" col-md-4">
@@ -47,7 +49,7 @@
             <div class="col-md-3">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Explemplaire disponibles
+                        <h3 class="panel-title">Exemplaires disponibles
                             {% if copiesOfBook is empty %}
                                 (0)
                             {% else %}
@@ -58,6 +60,8 @@
                         </h3>
                     </div>
                     <div class="panel-body">
+
+
                         {#TODO Refaire la liste des ID#}
                         {% if copiesOfBook is empty %}
                             Il n'y a malheuresement pas d'exemplaires de disponibles :'(
@@ -66,17 +70,21 @@
                         {% endif %}
                         {% for copy in copiesOfBook %}
 
-                            <li>{{ copy.id }}
+                            <li
+                                    {% if copy.id in borrowedCopiesOfBook %}
+                                        class="borrowed"
+                                    {% endif %}
+                            >{{ copy.id }}
 
-                            {% if app.session.get('admin') == true %}
+                                {% if app.session.get('admin') == true %}
 
-                                <a type="button" class="btn btn-default"
-                                   href="{{ path('borrow',{'bookId': copy.book_id  ,'copyId':copy.id } ) }}">
-                                    Emprunter
-                                </a>
+                                    <a type="button" class="btn btn-default"
+                                       href="{{ path('borrow',{'bookId': copy.book_id  ,'copyId':copy.id } ) }}">
+                                        Emprunter
+                                    </a>
 
 
-                            {% endif %}
+                                {% endif %}
 
                             </li>
                         {% endfor %}

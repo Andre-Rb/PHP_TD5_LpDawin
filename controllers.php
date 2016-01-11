@@ -10,7 +10,8 @@ $app->match('/', function () use ($app) {
 $app->match('/viewBook/{bookId}', function ($bookId) use ($app) {
     return $app['twig']->render('bookDetails.html.twig', array(
         'lookedUpBook' => $app['model']->getOneBook($bookId),
-        'copiesOfBook' => $app['model']->getAllCopiesOfABookById($bookId)
+        'copiesOfBook' => $app['model']->getAllCopiesOfABookById($bookId),
+        'borrowedCopiesOfBook' => $app['model']->getBorrowedCopiesOfThatBook($bookId, 0)
     ));
 })->bind('viewBook');
 

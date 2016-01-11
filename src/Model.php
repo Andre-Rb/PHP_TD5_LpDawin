@@ -73,7 +73,7 @@ class Model
     }
 
     /**
-     * Getting one particular book
+     * Getting one particular book and all his info except borrowing status
      */
     public function getOneBook($id)
     {
@@ -82,6 +82,42 @@ class Model
         $this->execute($query, array($id));
 
         return $query->fetchAll()[0];
+    }
+
+    /**
+     * Getting all copies of a book that are have been borrowed and are still borrowed
+     * @param $bookId
+     * @param $stillBorrowed
+     * @return array
+     * @throws ModelException
+     */
+    public function getBorrowedCopiesOfThatBook($bookId, $stillBorrowed)
+    {
+        $query = $this->pdo->prepare('
+            SELECT
+              library.exemplaires.id as \'copyId\',
+              library.livres.id as \'bookIdn\',
+              library.emprunts.fini as \'borrowingDone\'
+            FROM library.livres
+              INNER JOIN library.exemplaires
+                ON library.exemplaires.book_id = library.livres.id
+              INNER JOIN library.emprunts
+                ON library.emprunts.exemplaire = library.exemplaires.id
+            WHERE library.livres.id = ?
+            AND library.emprunts.fini = ?'
+        );
+
+        $this->execute($query, array($bookId, $stillBorrowed));
+
+        $queryRes = $query->fetchAll();
+        var_dump($queryRes);
+        $res = [];
+        if (!empty($queryRes)) {
+            foreach ($queryRes as $item) {
+                $res[] = $item['copyId'];
+            }
+        }
+        return $res;
     }
 
     /**
