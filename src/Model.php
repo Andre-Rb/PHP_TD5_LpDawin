@@ -110,7 +110,6 @@ class Model
         $this->execute($query, array($bookId, $stillBorrowed));
 
         $queryRes = $query->fetchAll();
-        var_dump($queryRes);
         $res = [];
         if (!empty($queryRes)) {
             foreach ($queryRes as $item) {
