@@ -97,10 +97,17 @@ $app->get('/borrow/{bookId}/{copyId}', function ($bookId, $copyId) use ($app) {
 $app->post('/borrow', function () use ($app) {
 
     $post = $app['request']->request;
-    if ($post->has('login') && $post->has('password')
+    if (
+        $post->has('borrower') &&
+        $post->has('datepickerDebut') &&
+        $post->has('datepickerFin') &&
+        $post->has('bookId') &&
+        $post->has('copyId')
     ) {
+        $successBorrow = $app['model']->insertBorrowing($post->get('copyId'), $post->get('borrower'), $post->get('datepickerDebut'), $post->get('datepickerFin'));
+        if ($successBorrow)
+            return $app['twig']->render('home.html.twig', array());
 
     }
 
-    return $app['twig']->render('home.html.twig', array());
 })->bind('borrowPost');

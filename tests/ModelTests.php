@@ -36,5 +36,9 @@ class ModelTests extends BaseTests
         $oneCopy = $copiesOfABook[0];
         $this->assertEquals($bookID, $oneCopy['book_id']);
 
+        $insertSuccessfull = $this->app['model']->insertBorrowing( $oneCopy['id'], "André", "2016-01-01", "2017-01-01");
+        $this->assertTrue($insertSuccessfull);
+
+
     }
 }

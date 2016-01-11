@@ -66,15 +66,19 @@
                         {% endif %}
                         {% for copy in copiesOfBook %}
 
-                            {% if app.session.get('admin') == false %}
+                            <li>{{ copy.id }}
+
+                            {% if app.session.get('admin') == true %}
 
                                 <a type="button" class="btn btn-default"
                                    href="{{ path('borrow',{'bookId': copy.book_id  ,'copyId':copy.id } ) }}">
                                     Emprunter
                                 </a>
-                                <li>{{ copy.id }}</li>
+
 
                             {% endif %}
+
+                            </li>
                         {% endfor %}
 
                     </div>

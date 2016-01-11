@@ -3,7 +3,13 @@
 <head>
     <title>Bibliothèque</title>
     <link rel="stylesheet" href="{{ app.request.basepath }}/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="{{ app.request.basepath }}/components/bootstrap-datepicker/bootstrap-datepicker-built.css"/>
     <link rel="stylesheet" href="{{ app.request.basepath }}/css/style.css"/>
+    <link rel="stylesheet" href="{{ app.request.basepath }}/components/require.css"/>
+    <script src="{{ app.request.basepath }}/components/jquery/jquery.min.js"></script>
+    <script src="{{ app.request.basepath }}/components/bootstrap-datepicker/bootstrap-datepicker-built.js"></script>
+
     <link rel="icon" href="{{ app.request.basepath }}/favicon.ico" type="image/x-icon"/>
 </head>
 <body>
@@ -48,10 +54,8 @@
 <hr>
 {{ dump(app.request.getMethod() ) }}
 {{ dump(app.request.request ) }}
-{#{{ dump(home_active ) }}#}
-{#{% if app.session.admin is defined %}#}
 {{ dump(app.session.all) }}
-{#{% endif %}#}
+{{ dump(app.session.get('admin')) }}
 
 </body>
 </html>

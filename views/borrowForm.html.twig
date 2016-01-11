@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block contents %}
-    <form class="form-horizontal" action="{{ path('borrowPost') }}">
+    <form class="form-horizontal" action="{{ path('borrowPost') }}" method="post">
         <fieldset>
             <legend>Formulaire d'emprunt</legend>
             <div class="form-group">
@@ -12,10 +12,28 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-4 control-label" for="strDate">Date de début</label>
+                <label class="col-md-4 control-label" for="strDate">Date de début </label>
                 <div class="col-md-4">
-                    <input id="strDate" name="strDate" placeholder="" class="form-control input-md" required=""
-                           type="date">
+                    <div class="input-group date">
+                        <input type="text" name="datepickerDebut" class="form-control datepicker" id="datepickerDebut">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                    <span class="help-block">Normalement, aujourd'hui</span>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="strDate">Date de fin</label>
+                <div class="col-md-4">
+                    <div class="input-group date">
+                        <input name="datepickerFin" type="text" class="form-control" id="datepickerFin">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -32,4 +50,36 @@
 
         </fieldset>
     </form>
+
+    <script>
+        $('#datepickerDebut').datepicker((
+        {
+            format: "yyyy-mm-dd",
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "fr",
+            daysOfWeekDisabled: "0,6",
+            daysOfWeekHighlighted: "1,2,3,4,5",
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true
+        }
+        )).datepicker('setDate', new Date());
+        ;
+
+
+        $('#datepickerFin').datepicker(
+                {
+                    format: "yyyy-mm-dd",
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    language: "fr",
+                    daysOfWeekDisabled: "0,6",
+                    daysOfWeekHighlighted: "1,2,3,4,5",
+                    calendarWeeks: true,
+                    autoclose: true,
+                    todayHighlight: true
+                }
+        );
+    </script>
 {% endblock %}
