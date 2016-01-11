@@ -59,4 +59,17 @@ class SiteTests extends BaseTests
         $books = $this->app['model']->getBooks();
         $this->assertEquals(1, count($books));
     }
+
+    /**
+     * Créé un livre disponible en 3 exemplaires,
+     * Vérifie que le nombre d'exemplaires affichés disponibles est bien de 3
+     * En emprunte un en envoyant une requête sur votre formulaire d'emprunt,
+     * puis vérifie que le nombre d'exemplaires disponible est maintenant de 2.
+     * Enfin, invoque le lien qui déclenchera le retour et vérifiera que le compteur est bien revenu à 3.
+     *
+     */
+    public function testEmprunt()
+    {
+
+    }
 }
