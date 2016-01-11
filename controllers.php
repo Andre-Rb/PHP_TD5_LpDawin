@@ -1,7 +1,6 @@
 <?php
 use Gregwar\Image\Image;
 
-//var_dump($app['model']->getAllCopiesOfABookById($bookId));
 
 $app->match('/', function () use ($app) {
     return $app['twig']->render('home.html.twig');
@@ -82,3 +81,26 @@ $app->match('/addBook', function () use ($app) {
 
     return $app['twig']->render('addBook.html.twig');
 })->bind('addBook');
+
+
+$app->get('/borrow/{bookId}/{copyId}', function ($bookId, $copyId) use ($app) {
+    $request = $app['request'];
+    if ($request->getMethod() == 'GET') {
+        return $app['twig']->render('borrowForm.html.twig', array(
+            'bookId' => $bookId,
+            'copyId' => $copyId
+        ));
+    }
+})->bind('borrow');
+
+
+$app->post('/borrow', function () use ($app) {
+
+    $post = $app['request']->request;
+    if ($post->has('login') && $post->has('password')
+    ) {
+
+    }
+
+    return $app['twig']->render('home.html.twig', array());
+})->bind('borrowPost');
