@@ -172,4 +172,26 @@ class Model
         return true;
 
     }
+
+    /**
+     * @param $copyId id of the copy what should be returned
+     * @return bool if the book as been returned has queried
+     * @throws ModelException
+     */
+    public function returnACopy($copyId)
+    {
+
+        $query = $this->pdo->prepare('
+                    UPDATE library.emprunts
+                    SET library.emprunts.fini = 1
+                    WHERE library.emprunts.exemplaire = ?
+            ');
+
+        $this->execute($query, array($copyId));
+
+        return true;
+
+    }
+
+
 }

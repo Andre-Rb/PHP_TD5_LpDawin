@@ -107,8 +107,17 @@ $app->post('/borrow', function () use ($app) {
     ) {
         $successBorrow = $app['model']->insertBorrowing($post->get('copyId'), $post->get('borrower'), $post->get('datepickerDebut'), $post->get('datepickerFin'));
         if ($successBorrow)
-            return $app['twig']->render('home.html.twig', array());
+            return $app->redirect($app["url_generator"]->generate("viewBook", array('bookId' => $post->get('bookId'))));
+
 
     }
 
 })->bind('borrowPost');
+
+$app->match('/unborrow/{bookId}/{copyId}', function ($bookId, $copyId) use ($app) {
+    $app['model']->returnACopy($copyId);
+    return $app->redirect($app["url_generator"]->generate("viewBook", array('bookId' => $bookId)));
+
+})->bind('unborrow');
+
+

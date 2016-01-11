@@ -29,7 +29,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
 
             <div class="col-md-5">
@@ -54,14 +53,12 @@
                                 (0)
                             {% else %}
                                 (
-                                {{ copiesOfBook|length - borrowedCopiesOfBook|length}}
+                                {{ copiesOfBook|length - borrowedCopiesOfBook|length }}
                                 )
                             {% endif %}
                         </h3>
                     </div>
                     <div class="panel-body">
-
-
                         {#TODO Refaire la liste des ID#}
                         {% if copiesOfBook is empty %}
                             Il n'y a malheuresement pas d'exemplaires de disponibles :'(
@@ -69,33 +66,31 @@
                             Allez donc regardez les anges !
                         {% endif %}
                         {% for copy in copiesOfBook %}
-
                             <li
                                     {% if copy.id in borrowedCopiesOfBook %}
                                         class="borrowed"
                                     {% endif %}
-                            >{{ copy.id }}
-
+                            >
+                                {{ copy.id }}
                                 {% if app.session.get('admin') == true %}
-
-                                    <a type="button" class="btn btn-default"
-                                       href="{{ path('borrow',{'bookId': copy.book_id  ,'copyId':copy.id } ) }}">
-                                        Emprunter
-                                    </a>
-
-
+                                    {% if copy.id in borrowedCopiesOfBook %}
+                                        <a type="button" class="btn btn-default"
+                                           href="{{ path('unborrow',{'bookId': copy.book_id  ,'copyId':copy.id } ) }}">
+                                            Rendre le livre
+                                        </a>
+                                    {% else %}
+                                        <a type="button" class="btn btn-default"
+                                           href="{{ path('borrow',{'bookId': copy.book_id  ,'copyId':copy.id } ) }}">
+                                            Emprunter
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
-
                             </li>
                         {% endfor %}
-
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 
 {% endblock %}
