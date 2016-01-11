@@ -54,7 +54,7 @@
                                 (0)
                             {% else %}
                                 (
-                                {{ copiesOfBook|length }}
+                                {{ copiesOfBook|length - borrowedCopiesOfBook|length}}
                                 )
                             {% endif %}
                         </h3>
